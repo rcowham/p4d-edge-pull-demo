@@ -1,0 +1,28 @@
+version: '3.4'
+
+# Note that the images depended on here can be built using build_docker_image.sh
+
+services:        
+    master:
+        build:
+          context: p4d.sdp/
+          target: sdpmaster
+        hostname: master
+        ports:
+        - "2167:1667"
+        command: /usr/sbin/sshd -D
+        volumes:
+        - ${PWD}/../../sdp:/sdp
+
+    replica_edge:
+        build:
+          context: p4d.sdp/
+          target: sdpbase
+        hostname: replica_edge
+        ports:
+        - "2266:1666"
+        command: /usr/sbin/sshd -D
+        links:
+        - master
+        volumes:
+        - ${PWD}/../../sdp:/sdp
