@@ -28,6 +28,8 @@ cat p4_1.vars.old | sed -e 's/=helix/=master/' > p4_1.vars
 p4 configure set server.depot.root=/p4/1/depots
 p4 configure set journalPrefix=/p4/1/checkpoints/p4_1
 p4 configure set track=1
+p4 configure set track=1
+p4 configure set rpl=4
 p4 configure set monitor=2
 p4 configure show
 
@@ -36,4 +38,7 @@ cp /p4/sdp/Server/Unix/p4/common/config/SiteTags.cfg /p4/common/config/
 
 /p4/common/bin/mkrep.sh -i 1 -t edge -s bos -r replica_edge -p
 
-sleep 600
+cd /p4
+
+ansible-playbook -i hosts install_sdp.yml
+

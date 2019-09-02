@@ -1,0 +1,140 @@
+  352  cat /p4/1/logs/pull.log
+  353  find /p4/1/depots/depot/Misc/ -type f 
+  354  p4 pull -l
+  355  p4 pull -ls
+  356  p4 verify -q //depot/Misc/...
+  357  p4 verify -qt //depot/Misc/...
+  358  cat /p4/1/logs/pull.log
+  359  less log
+  360  less /p4/1/logs/log 
+  361  rm -rf /p4/1/depots/depot/Misc/
+  362  p4 sync @0
+  363  p4 sync
+  364  less /p4/1/logs/log 
+
+
+$ p4 configure show
+P4ROOT=/p4/1/root (-r)
+P4PORT=1999 (-p)
+P4JOURNAL=/p4/1/logs/journal (-J)
+P4NAME=p4d_edge_bos (serverid)
+P4LOG=/p4/1/logs/log (-L)
+P4TICKETS=/p4/1/.p4tickets
+P4TRUST=/p4/1/.p4trust
+serviceUser=svc_p4d_edge_bos (configure)
+P4TARGET=master:1999 (configure)
+monitor=2 (configure)
+startup.1=pull -i 1 (configure)
+startup.2=pull -i 1 -u --trigger --batch 5 (configure)
+db.replication=readonly (configure)
+lbr.replication=cache (configure)
+journalPrefix=/p4/1/checkpoints.edge_bos/p4_1.edge_bos (configure)
+filesys.P4ROOT.min=10M (configure)
+filesys.P4JOURNAL.min=10M (configure)
+filesys.depot.min=10M (configure)
+server.depot.root=/p4/1/depots (configure)
+serverlog.file.3=/p4/1/logs/errors.csv (configure)
+serverlog.file.7=/p4/1/logs/events.csv (configure)
+serverlog.file.8=/p4/1/logs/integrity.csv (configure)
+serverlog.file.11=/p4/1/logs/triggers.csv (configure)
+serverlog.events.11=11 (configure)
+serverlog.retain.3=7 (configure)
+serverlog.retain.7=7 (configure)
+serverlog.retain.8=7 (configure)
+serverlog.retain.11=7 (configure)
+rejectList=P4EXP,version=2014.2,Operating System (configure)
+auth.id=p4_1 (configure)
+pull.trigger.dir=/p4/1/tmp (configure)
+server: 4 (configure)
+track: 1 (configure)
+rpl: 4 (configure)
+db.monitor.shared: 4096 (configure)
+db.reorg.disable: 1 (configure)
+dm.info.hide: 1 (configure)
+dm.keys.hide: 2 (configure)
+dm.shelve.promote: 1 (configure)
+dm.user.loginattempts: 7 (configure)
+dm.user.noautocreate: 2 (configure)
+filesys.bufsize: 1048576 (configure)
+filesys.checklinks: 2 (configure)
+lbr.autocompress: 1 (configure)
+lbr.bufsize: 1048576 (configure)
+net.autotune: 1 (configure)
+net.backlog: 2048 (configure)
+proxy.monitor.level: 3 (configure)
+rpl.checksum.auto: 1 (configure)
+rpl.checksum.change: 2 (configure)
+rpl.checksum.table: 1 (configure)
+rpl.compress: 4 (configure)
+run.users.authorize: 1 (configure)
+server.commandlimits: 2 (configure)
+server.locks.global: 1 (configure)
+server.global.client.views: 1 (configure)
+server.maxcommands: 2500 (configure)
+server.start.unlicensed: 1 (configure)
+filetype.bypasslock: 1 (configure)
+rpl.forward.all: 1 (configure)
+rpl.forward.login: 1 (configure)
+serverid=p4d_edge_bos (serverid)
+
+
+
+$ p4 configure show allservers
+any: auth.id = p4_1
+any: db.monitor.shared = 4096
+any: db.reorg.disable = 1
+any: dm.info.hide = 1
+any: dm.keys.hide = 2
+any: dm.shelve.promote = 1
+any: dm.user.loginattempts = 7
+any: dm.user.noautocreate = 2
+any: filesys.P4JOURNAL.min = 10M
+any: filesys.P4ROOT.min = 10M
+any: filesys.bufsize = 1M
+any: filesys.checklinks = 2
+any: filesys.depot.min = 10M
+any: filetype.bypasslock = 1
+any: journalPrefix = /p4/1/checkpoints/p4_1
+any: lbr.autocompress = 1
+any: lbr.bufsize = 1M
+any: monitor = 2
+any: net.autotune = 1
+any: net.backlog = 2048
+any: proxy.monitor.level = 3
+any: rejectList = P4EXP,version=2014.2,Operating System
+any: rpl = 4
+any: rpl.checksum.auto = 1
+any: rpl.checksum.change = 2
+any: rpl.checksum.table = 1
+any: rpl.compress = 4
+any: rpl.forward.login = 1
+any: run.users.authorize = 1
+any: server = 4
+any: server.commandlimits = 2
+any: server.depot.root = /p4/1/depots
+any: server.global.client.views = 1
+any: server.locks.global = 1
+any: server.maxcommands = 2500
+any: server.start.unlicensed = 1
+any: serverlog.events.11 = 11
+any: serverlog.file.11 = /p4/1/logs/triggers.csv
+any: serverlog.file.3 = /p4/1/logs/errors.csv
+any: serverlog.file.7 = /p4/1/logs/events.csv
+any: serverlog.file.8 = /p4/1/logs/integrity.csv
+any: serverlog.retain.11 = 7
+any: serverlog.retain.3 = 7
+any: serverlog.retain.7 = 7
+any: serverlog.retain.8 = 7
+any: track = 1
+p4d_edge_bos: P4TARGET = master:1999
+p4d_edge_bos: db.replication = readonly
+p4d_edge_bos: journalPrefix = /p4/1/checkpoints.edge_bos/p4_1.edge_bos
+p4d_edge_bos: lbr.replication = cache
+p4d_edge_bos: monitor = 2
+p4d_edge_bos: pull.trigger.dir = /p4/1/tmp
+p4d_edge_bos: rpl.compress = 4
+p4d_edge_bos: rpl.forward.all = 1
+p4d_edge_bos: server = 4
+p4d_edge_bos: serviceUser = svc_p4d_edge_bos
+p4d_edge_bos: startup.1 = pull -i 1
+p4d_edge_bos: startup.2 = pull -i 1 -u --trigger --batch 5

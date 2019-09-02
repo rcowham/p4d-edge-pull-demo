@@ -58,6 +58,8 @@ ADD ansible.cfg /p4
 ADD hosts /p4
 ADD install_sdp.yml /p4
 ADD replica_tasks.yml /p4
-ADD docker_entry_master.sh /p4
+ADD configure_master.sh /p4
+ADD configure_edge.sh /p4
+ADD pull_test.sh /p4
 
 USER root

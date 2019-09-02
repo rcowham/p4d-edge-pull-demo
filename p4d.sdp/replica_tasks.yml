@@ -32,8 +32,9 @@
     dest: /p4/1/logs/
   with_lines: "find /p4/1/logs/ -name mkrep*.log"
 
-- name: Record name of mkrep log for this server
-  shell: grep "p4 server {{server_id}}" /p4/1/logs/mkrep* | tail -1 | sed -e 's/:.*//'
+  # There could have been more than one mkrep log
+- name: Record name of latest mkrep log for this server
+  shell: grep -l "p4 server {{server_id}}" /p4/1/logs/mkrep* | tail -1
   register: mkrep_log
 
 - name: Get local service user command which contains random generated password
@@ -67,3 +68,15 @@
 
 - name: STEP 10. Start the replica
   shell: "/p4/1/bin/p4d_1_init start"
+
+# Extra tasks for showing edge pull
+- name: copy configure_edge
+  synchronize:
+    src: "{{item}}"
+    dest: /p4/
+  with_items:
+    - "configure_edge.sh"
+    - "pull_test.sh"
+
+- name: Set up edge server
+  shell: /p4/configure_edge.sh
