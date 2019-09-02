@@ -15,10 +15,12 @@ p4 --field Triggers+='pull_archive pull-archive pull "/p4/pull_test.sh %archiveL
 p4 configure set $server_id#pull.trigger.dir=/p4/1/tmp
 p4 configure set $server_id#lbr.replica.notransfer=1
 p4 configure set lbr.autocompress=1
+# Optional for edge server
+p4 configure set $server_id#lbr.replication=cache
 # Lots of logging!
 p4 configure set rpl=4
 
-# Configure our pull-archive trigger to be used, and for now unset the standard pull threads
+# Configure our pull-archive trigger to be used, and for now unset the standard pull threads so they aren't used
 
 p4 configure set "$server_id#startup.2=pull -i 1 -u --trigger --batch 2"
 for i in {3..6}
