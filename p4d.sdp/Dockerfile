@@ -61,5 +61,6 @@ ADD replica_tasks.yml /p4
 ADD configure_master.sh /p4
 ADD configure_edge.sh /p4
 ADD pull_test.sh /p4
+ADD submit_test.sh /p4
 
 USER root

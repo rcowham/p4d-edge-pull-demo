@@ -33,12 +33,15 @@ p4 configure set rpl=4
 p4 configure set monitor=2
 p4 configure show
 
-# Now run mkrep.sh
-cp /p4/sdp/Server/Unix/p4/common/config/SiteTags.cfg /p4/common/config/
+# Create server spec for master - required for submit transfer trigger
+p4 --field Services=commit-server server -o master.1 | p4 server -i
 
+# Now run mkrep.sh - which requires a site tags file
+cp /p4/sdp/Server/Unix/p4/common/config/SiteTags.cfg /p4/common/config/
 /p4/common/bin/mkrep.sh -i 1 -t edge -s bos -r replica_edge -p
 
 cd /p4
 
+# Run following playbook to handle the steps outlined in mkrep.sh output
 ansible-playbook -i hosts install_sdp.yml
 
