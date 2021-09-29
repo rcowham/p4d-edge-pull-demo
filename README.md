@@ -19,6 +19,7 @@ To properly configure and create edge server with required values:
 Then if you want to test things on edge server:
 
     ssh replica_edge
+
     . /p4/common/bin/p4_vars 1
     /p4/common/bin/p4login
     p4 verify -qt //depot/Misc/...

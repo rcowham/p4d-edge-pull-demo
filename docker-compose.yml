@@ -9,7 +9,7 @@ services:
           target: sdpmaster
         hostname: master
         ports:
-        - "2166:1999"
+        - "2166:1666"
         command: /usr/sbin/sshd -D
         volumes:
         - ${PWD}/../../sdp:/sdp
@@ -20,7 +20,7 @@ services:
           target: sdpbase
         hostname: replica_edge
         ports:
-        - "2266:1999"
+        - "2266:1666"
         command: /usr/sbin/sshd -D
         links:
         - master

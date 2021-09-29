@@ -1,4 +1,4 @@
-FROM centos:centos7 as sdpbase
+FROM geerlingguy/docker-centos7-ansible:latest as sdpbase
 MAINTAINER Robert Cowham "rcowham@perforce.com"
 
 RUN yum update -y; \
@@ -15,13 +15,14 @@ RUN yum install -y openssh-server openssh-clients passwd; \
     ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key -N ''
 
 # Python 3.6 plus p4python
-RUN yum install -y https://centos7.iuscommunity.org/ius-release.rpm; \
+RUN yum install -y https://repo.ius.io/ius-release-el7.rpm \
+    https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
     yum update; \
     yum install -y python36u python36u-libs python36u-devel python36u-pip; \
-    ln -s /usr/bin/python3.6 /usr/bin/python3; \
-    ln -s /usr/bin/pip3.6 /usr/bin/pip3;
+    ln -f -s /usr/bin/python3.6 /usr/bin/python3; \
+    ln -f -s /usr/bin/pip3.6 /usr/bin/pip3;
 
-RUN pip3.6 install p4python==2017.2.1615960 testinfra ansible
+RUN pip3.6 install p4python==2017.2.1615960
 
 ADD setup_container.sh /tmp
 RUN /bin/bash -x /tmp/setup_container.sh
@@ -31,6 +32,17 @@ ADD insecure_ssh_key /tmp
 ADD setup_ssh.sh /tmp
 
 RUN /bin/bash -x /tmp/setup_ssh.sh
+
+# Replace systemctl for use within docker
+RUN cd /usr/local/bin; \
+  wget https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl3.py; \
+  chmod 755 systemctl3.py; \
+  cd /usr/local/bin; \
+  mv systemctl systemctl.old; \
+  ln -s /usr/local/bin/systemctl3.py systemctl; \
+  cd /usr/bin; \
+  mv systemctl systemctl.old; \
+  ln -s /usr/local/bin/systemctl3.py systemctl
 
 # For SSH
 EXPOSE 22
@@ -43,15 +55,14 @@ EXPOSE 22
 FROM sdpbase as sdpmaster
 
 USER root
-RUN pip3.6 install ansible 
 
-RUN mkdir -p /hxdepots/reset && \
-    cd /hxdepots/reset && \
-    curl -k -s -O https://swarm.workshop.perforce.com/download/guest/perforce_software/helix-installer/main/src/reset_sdp.sh && \
-    chmod +x reset_sdp.sh && \
-    ./reset_sdp.sh -fast -no_ssl
+RUN mkdir -p /hxdepots/reset; \
+    cd /hxdepots/reset; \
+    curl -k -s -O https://swarm.workshop.perforce.com/view/guest/perforce_software/helix-installer/ami-builder/src/ami_install_sdp.sh; \
+    chmod +x ami_install_sdp.sh; \
+    ./ami_install_sdp.sh -no_cron -sd
 
-RUN ln -s /p4/common/bin/p4 /usr/local/bin/p4
+# RUN ln -s /p4/common/bin/p4 /usr/local/bin/p4
 
 USER perforce
 ADD ansible.cfg /p4

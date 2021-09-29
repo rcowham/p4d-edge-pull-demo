@@ -18,10 +18,12 @@ fi
 # Change default server as installed by reset_sdp.sh
 cd /p4/common/config
 mv p4_1.vars p4_1.vars.old
-cat p4_1.vars.old | sed -e 's/=helix/=master/' > p4_1.vars
+cat p4_1.vars.old | sed -e 's/=localhost/=master/' | sed -e 's/export SSL_PREFIX=ssl:/export SSL_PREFIX=/' > p4_1.vars
+echo "export VERIFY_SDP_SKIP_TEST_LIST=crontab" >> p4_1.vars
 
-# Start the server - some issues with doing sysctl in docker so we do it old way
-/p4/1/bin/p4d_1_init start
+# Special version of systemctl for docker
+sudo /usr/local/bin/systemctl start p4d_1
+sleep 5
 
 # Set configurables - but without restarting server
 . /p4/common/bin/p4_vars 1
@@ -44,4 +46,3 @@ cd /p4
 
 # Run following playbook to handle the steps outlined in mkrep.sh output
 ansible-playbook -i hosts install_sdp.yml
-
